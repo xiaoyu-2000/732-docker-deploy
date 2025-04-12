@@ -10,6 +10,7 @@ def register_routes(app, db):
     user_collection = db["users"]
     inventory = InventoryManager(db)
 
+
     # 设置上传路径和允许的图片格式
     UPLOAD_FOLDER = os.path.join("static", "uploads")
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
