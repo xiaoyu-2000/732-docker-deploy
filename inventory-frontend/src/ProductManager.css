@@ -1,0 +1,37 @@
+/* ProductManager.css */
+.product-page {
+    display: flex;
+    padding: 1rem;
+  }
+  
+  .filter-panel {
+    width: 200px;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .product-container {
+    flex: 1;
+  }
+  
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .product-box {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    width: 180px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .product-image {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
