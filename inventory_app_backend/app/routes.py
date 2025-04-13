@@ -1,5 +1,10 @@
 import os
-from flask import request, jsonify, session
+
+import matplotlib
+import pandas as pd
+matplotlib.use("Agg")  #  使用非图形界面的后端
+import matplotlib.pyplot as plt
+from flask import request, jsonify, session, send_file
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
@@ -187,3 +192,50 @@ def register_routes(app, db):
             return jsonify({"image_url": image_url}), 200
 
         return jsonify({"error": "Invalid file type"}), 400
+
+    #导出数据的api
+    @app.route("/export-products", methods=["GET"])
+    def export_products():
+        products = list(db["products"].find())  # db 是你连接的 MongoDB
+        for p in products:
+            p["_id"] = str(p["_id"])  # 处理 ObjectId
+
+        df = pd.DataFrame(products)
+        csv_path = os.path.join(app.root_path, "..", "static", "inventory_export.csv")
+        df.to_csv(csv_path, index=False)
+
+        return send_file(csv_path, as_attachment=True)
+
+    # 生成饼状图和柱状图的api
+    @app.route("/chart/products", methods=["GET"])
+    def product_chart():
+        products = list(db["products"].find())
+
+        names = [p["name"] for p in products]
+        quantities = [p["quantity"] for p in products]
+
+        # 生成柱状图
+        plt.figure(figsize=(10, 5))
+        plt.bar(names, quantities, color="skyblue")
+        plt.title("Product Inventory - Bar Chart")
+        plt.xlabel("Product")
+        plt.ylabel("Quantity")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        bar_path = "static/charts/bar_chart.png"
+        plt.savefig(bar_path)
+        plt.close()
+
+        # 生成饼状图
+        plt.figure(figsize=(6, 6))
+        plt.pie(quantities, labels=names, autopct="%1.1f%%", startangle=140)
+        plt.title("Product Inventory - Pie Chart")
+        plt.tight_layout()
+        pie_path = "static/charts/pie_chart.png"
+        plt.savefig(pie_path)
+        plt.close()
+
+        return jsonify({
+            "bar_chart": "/" + bar_path,
+            "pie_chart": "/" + pie_path
+        })

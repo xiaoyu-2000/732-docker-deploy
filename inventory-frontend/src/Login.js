@@ -2,12 +2,12 @@
 import "./Login.css"; 
 import React, { useState } from "react";
 import api from "./api";
-import { useNavigate } from "react-router-dom"; // ✅ 导入导航钩子
+import { useNavigate } from "react-router-dom"; // ✅ Import navigation hook
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // ✅ 初始化导航对象
+  const navigate = useNavigate(); // ✅ Initialize navigator
 
   const handleLogin = async () => {
     try {
@@ -16,32 +16,36 @@ function Login() {
         password,
       });
 
-      alert("登录成功：" + res.data.user.name);
+      alert("Login successful: " + res.data.user.name);
 
-      // ✅ 登录成功后跳转到 /products 页面
+      // ✅ Navigate to /products after successful login
       navigate("/products");
 
     } catch (err) {
-      alert("登录失败：" + (err.response?.data?.error || "未知错误"));
+      alert("Login failed: " + (err.response?.data?.error || "Unknown error"));
     }
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>登录</h2>
+    <div className="auth-container">
+      <h2>Login</h2>
       <input
         type="text"
-        placeholder="邮箱"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       /><br /><br />
       <input
         type="password"
-        placeholder="密码"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       /><br /><br />
-      <button onClick={handleLogin}>登录</button>
+      <button onClick={handleLogin}>Login</button>
+
+      {/* ✅ Link to registration page */}
+      <p>Don't have an account?</p>
+      <button onClick={() => navigate("/register")}>Register</button>
     </div>
   );
 }
