@@ -1,9 +1,9 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from pymongo import MongoClient
-from .config import MONGO_URI
+from .config import db  # ✅ 从 config 导入已连接的 db 实例
 from .routes import register_routes
+
 def create_app():
     app = Flask(
         __name__,
@@ -24,11 +24,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-    # ✅ MongoDB
-    client = MongoClient(MONGO_URI)
-    db = client["testdb"]
-
-    # ✅ 注册路由
+    # ✅ 注册路由并传入本地数据库
     register_routes(app, db)
 
     return app
