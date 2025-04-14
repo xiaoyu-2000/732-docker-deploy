@@ -91,17 +91,21 @@ function Sidebar({ filters, setFilters, newProduct, setNewProduct, onAddProduct,
 
       <hr />
       <div className="export-section">
-
-      <h3>Export</h3>
-      <button onClick={generateAndViewPieChart}>View Pie Chart</button>
-      <br /><br />
-      <button onClick={generateAndViewBarChart}>View Bar Chart</button>
-      <br /><br />
-      <a href="http://127.0.0.1:5000/export-products" download>
-        <button>Download CSV</button>
+        <h3>Export</h3>
+        <button onClick={generateAndViewPieChart}>View Pie Chart</button>
+        <br /><br />
+        <button onClick={generateAndViewBarChart}>View Bar Chart</button>
+        <br /><br />
+        <a href="http://127.0.0.1:5000/export-products" download>
+          <button>Download CSV</button>
+        </a>
+      </div>
+      <div className="chart-section">
+      <h3>Interactive Charts</h3>
+      <a href="/charts">
+        <button>📊 View Interactive Charts</button>
       </a>
       </div>
-
     </div>
   );
 }

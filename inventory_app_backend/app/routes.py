@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from .inventory import InventoryManager
+from .chart_data import ChartDataManager
 
 
 def register_routes(app, db):
@@ -239,3 +240,12 @@ def register_routes(app, db):
             "bar_chart": "/" + bar_path,
             "pie_chart": "/" + pie_path
         })
+
+
+    chart_data_manager = ChartDataManager(db)
+
+    @app.route("/api/chart-data", methods=["GET"])
+    @login_required
+    def get_chart_data():
+        data = chart_data_manager.get_inventory_data()
+        return jsonify(data)

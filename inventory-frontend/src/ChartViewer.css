@@ -1,0 +1,23 @@
+/* src/ChartViewer.css */
+.chart-container {
+    margin-top: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .chart-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .chart-box {
+    flex: 1;
+    min-width: 400px;
+  }
+  
