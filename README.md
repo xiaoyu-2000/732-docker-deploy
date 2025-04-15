@@ -1,4 +1,3 @@
-```markdown
 # Hi there! This is my Inventory Management System (Docker-Based)
 
 This project is a fully containerized inventory management system that includes:
@@ -134,4 +133,3 @@ To apply changes and rebuild the system.
 
 Enjoy the app!  
 Feel free to fork, deploy, and improve! 🎉
-```
