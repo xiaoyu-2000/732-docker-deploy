@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  backend:
+    build: ./inventory_app_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/testdb
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./inventory-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb-local
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db  # 👈 挂载你恢复出来的 volume
+
+volumes:
+  mongo-data:

@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+```markdown
+# Hi there! This is my Inventory Management System (Docker-Based)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a fully containerized inventory management system that includes:
 
-## Available Scripts
+- ✅ React Frontend (served by Nginx)
+- ✅ Flask Backend API (RESTful)
+- ✅ MongoDB Database
 
-In the project directory, you can run:
+## Which means
+> You don't need to install Node.js, Python, pip, or MongoDB!
+>
+> With Docker installed, you can run the entire system with a single command.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📦 Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### ✅ Install Docker Desktop
 
-### `npm test`
+If you haven’t installed Docker yet:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Windows**: https://www.docker.com/products/docker-desktop
+- **macOS**: https://www.docker.com/products/docker-desktop
 
-### `npm run build`
+Once installed, open Docker Desktop and make sure it’s **running**.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Getting Started
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1️⃣ Clone this repository
 
-### `npm run eject`
+```bash
+git clone https://github.com/xiaoyu-2000/732-docker-deploy.git
+cd 732-docker-deploy
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+> Alternatively, you can copy this entire folder if shared via USB.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2️⃣ Start all services (frontend, backend, and MongoDB)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+docker compose up --build
+```
 
-## Learn More
+This will:
+- Build the frontend (React)
+- Build the backend (Flask)
+- Start MongoDB
+- Launch everything in connected containers
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🌐 System Access
 
-### Code Splitting
+| Service   | Address                  |
+|-----------|--------------------------|
+| Frontend  | http://localhost:3000    |
+| Backend API | http://localhost:5000 |
+| MongoDB   | mongodb://localhost:27017 |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🛑 Stop the System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To stop all running services:
 
-### Making a Progressive Web App
+- Press `Ctrl + C` in the terminal
+- Or use:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+docker compose down
+```
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🧱 Project Structure
 
-### Deployment
+```
+732-docker-deploy/
+├── docker-compose.yml         # Docker orchestration
+├── frontend/                  # React frontend
+│   ├── Dockerfile
+│   ├── nginx.conf             # SPA route support for React Router
+│   └── (React source files)
+├── backend/                   # Flask backend
+│   ├── Dockerfile
+│   └── (Flask source files)
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🔁 Routing Note for React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+To ensure routes like `/charts`, `/products`, etc., don’t return 404 in Nginx, the following config is used in `frontend/nginx.conf`:
+
+```nginx
+location / {
+  try_files $uri /index.html;
+}
+```
+
+This ensures proper routing for all React SPA paths.
+
+---
+
+## 💬 Troubleshooting
+
+| Problem | Solution |
+|--------|----------|
+| Docker not found | Make sure Docker Desktop is installed and running |
+| Port already in use | Edit `docker-compose.yml` and change ports |
+| React routes 404 | Make sure `nginx.conf` is present and copied in Dockerfile |
+| Data not saving | MongoDB volume is preserved unless manually removed |
+
+---
+
+## 🧠 Developer Tip
+
+You can freely edit the code in `frontend/` or `backend/`, then run:
+
+```bash
+docker compose down
+docker compose up --build
+```
+
+To apply changes and rebuild the system.
+
+---
+
+Enjoy the app!  
+Feel free to fork, deploy, and improve! 🎉
+```

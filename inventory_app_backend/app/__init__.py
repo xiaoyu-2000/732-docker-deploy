@@ -1,7 +1,8 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from .config import db  # ✅ 从 config 导入已连接的 db 实例
+from pymongo import MongoClient
+from .config import MONGO_URI
 from .routes import register_routes
 
 def create_app():
@@ -10,21 +11,25 @@ def create_app():
         static_folder=os.path.join(os.path.dirname(__file__), '..', 'static')
     )
 
-    # ✅ 允许跨域 + 携带 Cookie
+    # ✅ 启用 CORS 并允许携带 Cookie
     CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 
-    # ✅ Secret key + Cookie 设置
+    # ✅ 设置 Secret Key 和 Cookie 相关配置
     app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
     app.config.update(
-        SESSION_COOKIE_SAMESITE="None",   # 👈 允许跨站请求发送 cookie
-        SESSION_COOKIE_SECURE=True        # 👈 Cookie 仅在 https 下生效（开发时也要设置）
+        SESSION_COOKIE_SAMESITE="None",
+        SESSION_COOKIE_SECURE=True
     )
 
-    # ✅ 上传设置
+    # ✅ 设置上传目录
     app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
-    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 最大 16MB 上传限制
 
-    # ✅ 注册路由并传入本地数据库
+    # ✅ 数据库连接
+    client = MongoClient(MONGO_URI)
+    db = client.get_database()  # 使用 URI 中指定的数据库名
+
+    # ✅ 注册路由并注入 db
     register_routes(app, db)
 
     return app
