@@ -19,7 +19,7 @@ This project is a fully containerized inventory management system that includes:
 
 If you haven’t installed Docker yet:
 
-- **Windows**: https://www.docker.com/products/docker-desktop
+- **Windows**: https://www.docker.com/products/docker-desktop  
 - **macOS**: https://www.docker.com/products/docker-desktop
 
 Once installed, open Docker Desktop and make sure it’s **running**.
@@ -53,13 +53,29 @@ This will:
 
 ---
 
+### 3️⃣ (Optional - First Time Only) Import MongoDB Data
+
+> There is a `mongo-dump/` folder from the project root and you need to import sample data, run the following script:
+
+```bash
+./import_dump.sh
+```
+
+This will:
+- Copy the dump folder into the MongoDB container
+- Restore the `testdb` database inside the container
+
+You only need to do this **once** on a fresh setup.
+
+---
+
 ## 🌐 System Access
 
-| Service   | Address                  |
-|-----------|--------------------------|
-| Frontend  | http://localhost:3000    |
-| Backend API | http://localhost:5000 |
-| MongoDB   | mongodb://localhost:27017 |
+| Service       | Address                  |
+|---------------|--------------------------|
+| Frontend UI   | http://localhost:3000    |
+| Backend API   | http://localhost:5000    |
+| MongoDB (URI) | mongodb://localhost:27017 |
 
 ---
 
@@ -88,6 +104,8 @@ docker compose down
 ├── backend/                   # Flask backend
 │   ├── Dockerfile
 │   └── (Flask source files)
+├── mongo-dump/                # Optional MongoDB dump (for import)
+├── import_dump.sh             # Script to import MongoDB data
 └── README.md
 ```
 
@@ -109,12 +127,12 @@ This ensures proper routing for all React SPA paths.
 
 ## 💬 Troubleshooting
 
-| Problem | Solution |
-|--------|----------|
-| Docker not found | Make sure Docker Desktop is installed and running |
-| Port already in use | Edit `docker-compose.yml` and change ports |
-| React routes 404 | Make sure `nginx.conf` is present and copied in Dockerfile |
-| Data not saving | MongoDB volume is preserved unless manually removed |
+| Problem             | Solution                                                |
+|---------------------|----------------------------------------------------------|
+| Docker not found    | Make sure Docker Desktop is installed and running        |
+| Port already in use | Edit `docker-compose.yml` and change ports              |
+| React routes 404    | Make sure `nginx.conf` is present and copied in Dockerfile |
+| Data not saving     | MongoDB volume is preserved unless manually removed      |
 
 ---
 
