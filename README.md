@@ -50,13 +50,16 @@ This will:
 
 
 ### 3️⃣ (Optional - First Time Only) Import MongoDB Data
+> When you run the project for the first time, the data in the database is not automatically loaded into the backend due to the volume being mounted before the MongoDB container finishes initializing. So you need to import the sample data.
 
-> There is a `mongo-dump/` folder from the project root and you need to import sample data, run the following script:
-
+> First: Open a new terminal and navigate to the root directory of the project. For example:
+```bash
+cd ~/Desktop/732-docker-deploy
+```
+> Then, you need to import sample data, run the following script:
 ```bash
 ./import_dump.sh
 ```
-
 This will:
 - Copy the dump folder into the MongoDB container
 - Restore the `testdb` database inside the container
