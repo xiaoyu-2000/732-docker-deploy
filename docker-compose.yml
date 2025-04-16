@@ -7,7 +7,7 @@ services:
       - "32001:5000"  
     environment:
       - FLASK_RUN_PORT=5000  
-      - MONGO_URI=mongodb://mongo:27017/testdb
+      - MONGO_URI=mongodb://mongo:27019/testdb
     depends_on:
       - mongo
 
@@ -22,7 +22,8 @@ services:
     image: mongo:6.0
     container_name: mongodb-local
     ports:
-      - "27017:27017"
+      - "27019:27019"
+    command: ["mongod", "--port", "27019"] 
     volumes:
       - mongo-data:/data/db
 
