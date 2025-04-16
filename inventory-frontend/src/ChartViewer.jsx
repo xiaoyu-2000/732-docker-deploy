@@ -1,14 +1,14 @@
-// src/ChartViewer.jsx
 import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import "./ChartViewer.css";
+import { BASE_URL } from "./api";  // ✅ 引入后端地址
 
 const ChartViewer = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/chart-data", {
-      credentials: "include", // ⚠️ 必须带上 cookie
+    fetch(`${BASE_URL}/api/chart-data`, {
+      credentials: "include", // ✅ 允许携带 Cookie
     })
       .then((res) => {
         if (!res.ok) throw new Error("请求失败，可能未登录或服务器未响应");
@@ -32,31 +32,25 @@ const ChartViewer = () => {
       <h2>📊 Stock Charts </h2>
 
       <div className="chart-row">
-        {/* 柱状图容器 */}
         <div className="chart-box">
           <Plot
-            data={[
-              {
-                x: productNames,
-                y: productQuantities,
-                type: "bar",
-                marker: { color: "skyblue" },
-              },
-            ]}
+            data={[{
+              x: productNames,
+              y: productQuantities,
+              type: "bar",
+              marker: { color: "skyblue" },
+            }]}
             layout={{ title: "产品库存柱状图", xaxis: { tickangle: -45 } }}
           />
         </div>
 
-        {/* 饼状图容器 */}
         <div className="chart-box">
           <Plot
-            data={[
-              {
-                labels: productNames,
-                values: productQuantities,
-                type: "pie",
-              },
-            ]}
+            data={[{
+              labels: productNames,
+              values: productQuantities,
+              type: "pie",
+            }]}
             layout={{ title: "Pie chart" }}
           />
         </div>

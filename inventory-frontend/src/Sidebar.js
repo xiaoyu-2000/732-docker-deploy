@@ -1,15 +1,15 @@
-// src/Sidebar.js
 import React from "react";
 import "./Sidebar.css"; // Reusable styles
+import { BASE_URL } from "./api"; // ✅ 引入统一的后端地址
 
 function Sidebar({ filters, setFilters, newProduct, setNewProduct, onAddProduct, onRefresh }) {
   // ✅ 点击按钮生成图并打开 Pie Chart
   const generateAndViewPieChart = async () => {
     try {
-      await fetch("http://127.0.0.1:5000/chart/products", {
+      await fetch(`${BASE_URL}/chart/products`, {
         credentials: "include",
       });
-      window.open("http://127.0.0.1:5000/static/charts/pie_chart.png", "_blank");
+      window.open(`${BASE_URL}/static/charts/pie_chart.png`, "_blank");
     } catch (err) {
       alert("Failed to generate pie chart");
     }
@@ -18,10 +18,10 @@ function Sidebar({ filters, setFilters, newProduct, setNewProduct, onAddProduct,
   // ✅ 点击按钮生成图并打开 Bar Chart
   const generateAndViewBarChart = async () => {
     try {
-      await fetch("http://127.0.0.1:5000/chart/products", {
+      await fetch(`${BASE_URL}/chart/products`, {
         credentials: "include",
       });
-      window.open("http://127.0.0.1:5000/static/charts/bar_chart.png", "_blank");
+      window.open(`${BASE_URL}/static/charts/bar_chart.png`, "_blank");
     } catch (err) {
       alert("Failed to generate bar chart");
     }
@@ -96,15 +96,15 @@ function Sidebar({ filters, setFilters, newProduct, setNewProduct, onAddProduct,
         <br /><br />
         <button onClick={generateAndViewBarChart}>View Bar Chart</button>
         <br /><br />
-        <a href="http://127.0.0.1:5000/export-products" download>
+        <a href={`${BASE_URL}/export-products`} download>
           <button>Download CSV</button>
         </a>
       </div>
       <div className="chart-section">
-      <h3>Interactive Charts</h3>
-      <a href="/charts">
-        <button>📊 View Interactive Charts</button>
-      </a>
+        <h3>Interactive Charts</h3>
+        <a href="/charts">
+          <button>📊 View Interactive Charts</button>
+        </a>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "./api";
+import { BASE_URL } from "./api";
 import "./ProductManager.css";
 import Sidebar from "./Sidebar";
 
@@ -111,7 +112,7 @@ function ProductManager() {
               <p>Price: ${product.price}</p>
               {product.image && (
                 <img
-                  src={`http://127.0.0.1:5000${product.image}`}
+                  src={`${BASE_URL}${product.image}`}
                   alt={product.name}
                   className="product-image"
                 />
