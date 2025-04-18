@@ -8,7 +8,7 @@
 
 ### Which means
 > You don't need to install Node.js, Python, pip, or MongoDB!
-> With Docker installed, you can run the entire system with a single command.
+> With Docker installed, you can run the entire system with a **single command**.
 
 ---
 
@@ -81,6 +81,13 @@ docker compose down
 
 ## 😄 Usage Introduction
 #### This is a web-based inventory management system built with a Python Flask backend and a React frontend.
+
+### To login, please use 
+
+| Email       | Password                  |
+|---------------|--------------------------|
+|  lu@lu.com  |  lu   |
+
 
 #### With this app, you can:
 
