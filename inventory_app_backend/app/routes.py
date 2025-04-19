@@ -2,7 +2,7 @@ import os
 
 import matplotlib
 import pandas as pd
-matplotlib.use("Agg")  #  使用非图形界面的后端
+matplotlib.use("Agg")  # Use non-GUI backend for matplotlib
 import matplotlib.pyplot as plt
 from flask import request, jsonify, session, send_file
 from werkzeug.utils import secure_filename
@@ -16,15 +16,16 @@ def register_routes(app, db):
     user_collection = db["users"]
     inventory = InventoryManager(db)
 
-
-    # 设置上传路径和允许的图片格式
+    # Upload settings
     UPLOAD_FOLDER = os.path.join("static", "uploads")
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+    # Check file extension
     def allowed_file(filename):
         return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+    # Login required decorator
     def login_required(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -33,10 +34,12 @@ def register_routes(app, db):
             return f(*args, **kwargs)
         return decorated_function
 
+    # Root API - Test if app is running
     @app.route("/")
     def home():
         return "Flask + MongoDB Inventory App is running!"
 
+    # Get all users
     @app.route("/users")
     def get_users():
         users = []
@@ -45,6 +48,7 @@ def register_routes(app, db):
             users.append(u)
         return jsonify(users)
 
+    # Register a new user
     @app.route("/register", methods=["POST"])
     def register():
         data = request.get_json()
@@ -68,6 +72,7 @@ def register_routes(app, db):
         result = user_collection.insert_one(user)
         return jsonify({"message": "User registered successfully!", "id": str(result.inserted_id)}), 201
 
+    # Login a user
     @app.route("/login", methods=["POST"])
     def login():
         data = request.get_json()
@@ -96,28 +101,33 @@ def register_routes(app, db):
             }
         }), 200
 
+    # Logout the user
     @app.route("/logout", methods=["POST"])
     def logout():
         session.clear()
         return jsonify({"message": "Logged out successfully"}), 200
 
+    # Get all products (login required)
     @app.route("/products", methods=["GET"])
     @login_required
     def get_products():
         return jsonify(inventory.get_all_products())
 
+    # Get product by ID (login required)
     @app.route("/products/<product_id>", methods=["GET"])
     @login_required
     def get_product_by_id(product_id):
         result, code = inventory.get_product_by_id(product_id)
         return jsonify(result), code
 
+    # Delete a product by ID (login required)
     @app.route("/products/<product_id>", methods=["DELETE"])
     @login_required
     def delete_product(product_id):
         result, code = inventory.delete_product(product_id)
         return jsonify(result), code
 
+    # Update product by ID (login required)
     @app.route("/products/<product_id>", methods=["PUT"])
     @login_required
     def update_product(product_id):
@@ -146,6 +156,7 @@ def register_routes(app, db):
         result, code = inventory.update_product(product_id, update_data)
         return jsonify(result), code
 
+    # Add new product (login required)
     @app.route("/products/add", methods=["POST"])
     @login_required
     def add_product():
@@ -177,6 +188,7 @@ def register_routes(app, db):
         result, code = inventory.add_product(product_data)
         return jsonify(result), code
 
+    # Upload image only
     @app.route("/upload-image", methods=["POST"])
     def upload_image():
         if "image" not in request.files:
@@ -194,12 +206,12 @@ def register_routes(app, db):
 
         return jsonify({"error": "Invalid file type"}), 400
 
-    #导出数据的api
+    # Export product data as CSV
     @app.route("/export-products", methods=["GET"])
     def export_products():
-        products = list(db["products"].find())  # db 是你连接的 MongoDB
+        products = list(db["products"].find())
         for p in products:
-            p["_id"] = str(p["_id"])  # 处理 ObjectId
+            p["_id"] = str(p["_id"])
 
         df = pd.DataFrame(products)
         csv_path = os.path.join(app.root_path, "..", "static", "inventory_export.csv")
@@ -207,7 +219,7 @@ def register_routes(app, db):
 
         return send_file(csv_path, as_attachment=True)
 
-    # 生成饼状图和柱状图的api
+    # Generate product charts (bar & pie)
     @app.route("/chart/products", methods=["GET"])
     def product_chart():
         products = list(db["products"].find())
@@ -215,7 +227,7 @@ def register_routes(app, db):
         names = [p["name"] for p in products]
         quantities = [p["quantity"] for p in products]
 
-        # 生成柱状图
+        # Bar chart
         plt.figure(figsize=(10, 5))
         plt.bar(names, quantities, color="skyblue")
         plt.title("Product Inventory - Bar Chart")
@@ -227,7 +239,7 @@ def register_routes(app, db):
         plt.savefig(bar_path)
         plt.close()
 
-        # 生成饼状图
+        # Pie chart
         plt.figure(figsize=(6, 6))
         plt.pie(quantities, labels=names, autopct="%1.1f%%", startangle=140)
         plt.title("Product Inventory - Pie Chart")
@@ -241,7 +253,7 @@ def register_routes(app, db):
             "pie_chart": "/" + pie_path
         })
 
-
+    # Get chart data (structured JSON)
     chart_data_manager = ChartDataManager(db)
 
     @app.route("/api/chart-data", methods=["GET"])

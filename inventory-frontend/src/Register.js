@@ -1,4 +1,4 @@
-// src/Register.js
+
 import "./Login.css"; 
 import React, { useState } from "react";
 import api from "./api";

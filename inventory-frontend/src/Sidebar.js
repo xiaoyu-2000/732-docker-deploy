@@ -1,9 +1,9 @@
 import React from "react";
 import "./Sidebar.css"; // Reusable styles
-import { BASE_URL } from "./api"; // ✅ 引入统一的后端地址
+import { BASE_URL } from "./api";
 
 function Sidebar({ filters, setFilters, newProduct, setNewProduct, onAddProduct, onRefresh }) {
-  // ✅ 点击按钮生成图并打开 Pie Chart
+  // Pie Chart
   const generateAndViewPieChart = async () => {
     try {
       await fetch(`${BASE_URL}/chart/products`, {
@@ -15,7 +15,7 @@ function Sidebar({ filters, setFilters, newProduct, setNewProduct, onAddProduct,
     }
   };
 
-  // ✅ 点击按钮生成图并打开 Bar Chart
+  // Bar Chart
   const generateAndViewBarChart = async () => {
     try {
       await fetch(`${BASE_URL}/chart/products`, {

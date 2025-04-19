@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import "./ChartViewer.css";
-import { BASE_URL } from "./api";  // ✅ 引入后端地址
+import { BASE_URL } from "./api";  // backend api
 
 const ChartViewer = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/chart-data`, {
-      credentials: "include", // ✅ 允许携带 Cookie
+      credentials: "include", // allow Cookie
     })
       .then((res) => {
-        if (!res.ok) throw new Error("请求失败，可能未登录或服务器未响应");
+        if (!res.ok) throw new Error("FAILED");
         return res.json();
       })
       .then((data) => {
-        console.log("✅ 收到后端数据：", data);
+        console.log("GET the data", data);
         setData(data);
       })
       .catch((err) => {
-        console.error("❌ 图表数据加载失败：", err.message);
-        alert("无法加载图表数据，请确认是否已登录！");
+        console.error("Failed to load chart：", err.message);
+        alert("Make sure you are logged in plz");
       });
   }, []);
 
@@ -40,7 +40,7 @@ const ChartViewer = () => {
               type: "bar",
               marker: { color: "skyblue" },
             }]}
-            layout={{ title: "产品库存柱状图", xaxis: { tickangle: -45 } }}
+            layout={{ title: "bar chart", xaxis: { tickangle: -45 } }}
           />
         </div>
 

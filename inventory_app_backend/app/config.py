@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 
-# ✅ 加载 settings.env 文件中的变量
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'settings.env')
 load_dotenv(dotenv_path)
 

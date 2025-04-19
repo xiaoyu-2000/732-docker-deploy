@@ -5,7 +5,7 @@ class ChartDataManager:
         self.collection = db["products"]
 
     def get_inventory_data(self):
-        """返回每个产品的名称和数量，用于前端画图"""
+
         products = self.collection.find()
         chart_data = []
         for p in products:
