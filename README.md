@@ -82,7 +82,7 @@ docker compose down
 ## 😄 Usage Introduction
 #### This is a web-based inventory management system built with a Python Flask backend and a React frontend.
 
-### To login, please rigester first
+#### To login, please rigester first, and using the email and password to login
 #### With this app, you can:
 
 - ✅ Add, delete, and search for products
